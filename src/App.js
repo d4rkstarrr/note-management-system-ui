@@ -14,12 +14,15 @@ import Prefetch from './features/auth/Prefetch'
 import PersistLogin from './features/auth/PersistLogin'
 import RequireAuth from './features/auth/RequireAuth'
 import { ROLES } from './config/roles'
+import useTitle from './hooks/useTitle';
 
 function App() {
+  useTitle('Note Management System')
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* Public Routes */}
+        {/* public routes */}
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
 
