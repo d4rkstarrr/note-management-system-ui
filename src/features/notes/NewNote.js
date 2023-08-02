@@ -4,7 +4,7 @@ import PulseLoader from 'react-spinners/PulseLoader'
 import useTitle from '../../hooks/useTitle'
 
 const NewNote = () => {
-    useTitle('techNotes: New Note')
+    useTitle('New Task')
 
     const { users } = useGetUsersQuery("usersList", {
         selectFromResult: ({ data }) => ({
@@ -12,7 +12,7 @@ const NewNote = () => {
         }),
     })
 
-    if (!users?.length) return <PulseLoader color={"#FFF"} />
+    if (!users?.length) return <PulseLoader size={50} color={"#FFF"} />
 
     const content = <NewNoteForm users={users} />
 

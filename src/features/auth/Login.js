@@ -1,17 +1,31 @@
 import { useRef, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 import usePersist from '../../hooks/usePersist'
 import useTitle from '../../hooks/useTitle'
 import PulseLoader from 'react-spinners/PulseLoader'
+import {
+    MDBNavbar,
+    MDBContainer,
+    MDBIcon,
+    MDBNavbarNav,
+    MDBNavbarItem,
+    MDBNavbarLink,
+    MDBNavbarToggler,
+    MDBCollapse,
+    MDBInputGroup,
+    MDBCard, MDBCardBody, MDBInput, MDBCheckbox, MDBBtn, MDBRow, MDBCol, MDBNavbarBrand
+} from 'mdb-react-ui-kit'
 
 const Login = () => {
+
     useTitle('Employee Login')
 
     const userRef = useRef()
     const errRef = useRef()
+    const [showNavColorSecond, setShowNavColorSecond] = useState(false);
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
@@ -41,11 +55,11 @@ const Login = () => {
             navigate('/dash')
         } catch (err) {
             if (!err.status) {
-                setErrMsg('No Server Response');
+                setErrMsg('No Server Response. Please try again later.');
             } else if (err.status === 400) {
                 setErrMsg('Missing Username or Password');
             } else if (err.status === 401) {
-                setErrMsg('Unauthorized');
+                setErrMsg('Unauthorized.');
             } else {
                 setErrMsg(err.data?.message);
             }
@@ -59,56 +73,118 @@ const Login = () => {
 
     const errClass = errMsg ? "errmsg" : "offscreen"
 
-    if (isLoading) return <PulseLoader color={"#FFF"} />
+    if (isLoading) return <PulseLoader size={50} color={"#FFF"} />
 
     const content = (
-        <section className="public">
+        <section>
             <header>
-                <h1>Employee Login</h1>
+                <MDBNavbar expand='lg' dark bg-transparent="true">
+                    <MDBContainer fluid>
+                        <MDBNavbarBrand>
+                            <img
+                            src='../img/logo.png'
+                            height='30'
+                            alt=''
+                            loading='lazy'
+                            />
+                        </MDBNavbarBrand>
+                        <MDBNavbarToggler
+                            type='button'
+                            data-target='#navbarColor02'
+                            aria-controls='navbarColor02'
+                            aria-expanded='false'
+                            aria-label='Toggle navigation'
+                            onClick={() => setShowNavColorSecond(!showNavColorSecond)}
+                        >
+                            <MDBIcon icon='bars' fas />
+                        </MDBNavbarToggler>
+                        <MDBCollapse show={showNavColorSecond} navbar id='navbarColor02'>
+                            <MDBNavbarNav className='me-auto mb-2 mb-lg-0 text-center'>
+                                <MDBNavbarItem>
+                                    <MDBNavbarLink href='/'>Task Management System</MDBNavbarLink>
+                                </MDBNavbarItem>
+                            </MDBNavbarNav>
+                            <MDBInputGroup tag="form" className='d-flex w-auto'>
+                            <MDBNavbarNav className='me-auto mb-2 mb-lg-0 text-center'>
+                                <MDBNavbarItem>
+                                    <MDBNavbarLink href='/'>Home</MDBNavbarLink>
+                                </MDBNavbarItem>
+                            </MDBNavbarNav>
+                            </MDBInputGroup>
+                        </MDBCollapse>
+                    </MDBContainer>
+                </MDBNavbar>
             </header>
-            <main className="login">
-                <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
+            <main>
+                <MDBContainer fluid>
 
-                <form className="form" onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        className="form__input"
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        value={username}
-                        onChange={handleUserInput}
-                        autoComplete="off"
-                        required
-                    />
+                    <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                        <MDBCol col='12'>
 
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        className="form__input"
-                        type="password"
-                        id="password"
-                        onChange={handlePwdInput}
-                        value={password}
-                        required
-                    />
-                    <button className="form__submit-button">Sign In</button>
+                        <MDBCard className='bg-dark text-white-50 my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                            <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                            
+                            <div className='text-danger'>
+                                <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
+                            </div>
 
+                            <img
+                                src='../img/tasktrack.png'
+                                height='100'
+                                alt=''
+                                loading='lazy'
+                                className='rounded-circle'
+                            />
 
-                    <label htmlFor="persist" className="form__persist">
-                        <input
-                            type="checkbox"
-                            className="form__checkbox"
-                            id="persist"
-                            onChange={handleToggle}
-                            checked={persist}
-                        />
-                        Trust This Device
-                    </label>
-                </form>
+                            <p className="mt-2 mb-2">Sign In</p>
+
+                            <MDBInput 
+                                wrapperClass='mb-4 mx-5 w-100' 
+                                labelClass='text-secondary' 
+                                label='Username' 
+                                id='username'
+                                ref={userRef}
+                                value={username}
+                                onChange={handleUserInput}
+                                autoComplete="off"
+                                type='text' 
+                                size="lg"
+                                required
+                            />
+
+                            <MDBInput 
+                                wrapperClass='mb-4 mx-5 w-100' 
+                                labelClass='text-secondary' 
+                                label='Password' 
+                                id='password'
+                                onChange={handlePwdInput}
+                                value={password}
+                                type='password' 
+                                size="lg"
+                                required
+                            />
+
+                            <MDBCheckbox 
+                                name='flexCheck' 
+                                id='persist' 
+                                className='mb-4' 
+                                onChange={handleToggle} 
+                                label='Remember Me'
+                                checked={persist}
+                            />
+
+                            <MDBBtn className='mx-2 px-5 btn-primary' size='lg' onClick={handleSubmit}>
+                                Login
+                            </MDBBtn>
+
+                            </MDBCardBody>
+                        </MDBCard>
+
+                        </MDBCol>
+                    </MDBRow>
+
+                </MDBContainer>
             </main>
-            <footer>
-                <Link to="/">Back to Home</Link>
-            </footer>
         </section>
     )
 

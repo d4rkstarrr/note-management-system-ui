@@ -5,7 +5,7 @@ import PulseLoader from 'react-spinners/PulseLoader'
 import useTitle from '../../hooks/useTitle'
 
 const EditUser = () => {
-    useTitle('techNotes: Edit User')
+    useTitle('Edit User')
 
     const { id } = useParams()
 
@@ -15,7 +15,7 @@ const EditUser = () => {
         }),
     })
 
-    if (!user) return <PulseLoader color={"#FFF"} />
+    if (!user) return <PulseLoader size={50} color={"#FFF"} />
 
     const content = <EditUserForm user={user} />
 

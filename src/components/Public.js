@@ -1,27 +1,60 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import {
+    MDBNavbar,
+    MDBContainer,
+    MDBIcon,
+    MDBNavbarNav,
+    MDBNavbarItem,
+    MDBNavbarLink,
+    MDBNavbarToggler,
+    MDBCollapse,
+    MDBInputGroup,
+    MDBNavbarBrand
+} from 'mdb-react-ui-kit'
 
 const Public = () => {
-    const content = (
-        <section className="public">
-            <header>
-                <h1>Welcome to <span className="nowrap">Dan D. Repairs!</span></h1>
-            </header>
-            <main className="public__main">
-                <p>Located in Beautiful Downtown Foo City, Dan D. Repairs  provides a trained staff ready to meet your tech repair needs.</p>
-                <address className="public__addr">
-                    Dan D. Repairs<br />
-                    555 Foo Drive<br />
-                    Foo City, CA 12345<br />
-                    <a href="tel:+15555555555">(555) 555-5555</a>
-                </address>
-                <br />
-                <p>Owner: Dan Davidson</p>
-            </main>
-            <footer>
-                <Link to="/login">Employee Login</Link>
-            </footer>
-        </section>
 
+    const [showNavColorSecond, setShowNavColorSecond] = useState(false);
+
+    const content = (
+            <header>
+                <MDBNavbar expand='lg' dark bg-transparent="true">
+                    <MDBContainer fluid>
+                        <MDBNavbarBrand>
+                            <img
+                            src='../img/logo.png'
+                            height='30'
+                            alt=''
+                            loading='lazy'
+                            />
+                        </MDBNavbarBrand>
+                        <MDBNavbarToggler
+                            type='button'
+                            data-target='#navbarColor02'
+                            aria-controls='navbarColor02'
+                            aria-expanded='false'
+                            aria-label='Toggle navigation'
+                            onClick={() => setShowNavColorSecond(!showNavColorSecond)}
+                        >
+                            <MDBIcon icon='bars' fas />
+                        </MDBNavbarToggler>
+                        <MDBCollapse show={showNavColorSecond} navbar id='navbarColor02'>
+                            <MDBNavbarNav className='me-auto mb-2 mb-lg-0 text-center'>
+                                <MDBNavbarItem>
+                                    <MDBNavbarLink href='/'>Task Management System</MDBNavbarLink>
+                                </MDBNavbarItem>
+                            </MDBNavbarNav>
+                            <MDBInputGroup tag="form" className='d-flex w-auto'>
+                            <MDBNavbarNav className='me-auto mb-2 mb-lg-0 text-center'>
+                                <MDBNavbarItem>
+                                    <MDBNavbarLink href='/login'>Login</MDBNavbarLink>
+                                </MDBNavbarItem>
+                            </MDBNavbarNav>
+                            </MDBInputGroup>
+                        </MDBCollapse>
+                    </MDBContainer>
+                </MDBNavbar>
+            </header>
     )
     return content
 }

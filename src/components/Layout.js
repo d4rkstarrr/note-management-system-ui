@@ -4,7 +4,9 @@ import ParticleBackground from './ParticlesBackground'
 const Layout = () => {
     return <>
         <ParticleBackground />
-        <Outlet />
+        <div>
+            <Outlet />
+        </div>
     </>
 }
 export default Layout

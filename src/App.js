@@ -17,7 +17,7 @@ import { ROLES } from './config/roles'
 import useTitle from './hooks/useTitle';
 
 function App() {
-  useTitle('Note Management System')
+  useTitle('Task Management System')
 
   return (
     <Routes>
