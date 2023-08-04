@@ -18,6 +18,8 @@ import {
     MDBInputGroup,
     MDBCard, MDBCardBody, MDBInput, MDBCheckbox, MDBBtn, MDBRow, MDBCol, MDBNavbarBrand
 } from 'mdb-react-ui-kit'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faIls } from '@fortawesome/free-solid-svg-icons'
 
 const Login = () => {
 
@@ -78,15 +80,10 @@ const Login = () => {
     const content = (
         <section>
             <header>
-                <MDBNavbar expand='lg' dark bg-transparent="true">
+                <MDBNavbar expand='lg' light bgColor='light'>
                     <MDBContainer fluid>
                         <MDBNavbarBrand>
-                            <img
-                            src='../img/logo.png'
-                            height='30'
-                            alt=''
-                            loading='lazy'
-                            />
+                            <FontAwesomeIcon icon={faIls} size='xl'/>
                         </MDBNavbarBrand>
                         <MDBNavbarToggler
                             type='button'
@@ -121,22 +118,16 @@ const Login = () => {
                     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                         <MDBCol col='12'>
 
-                        <MDBCard className='bg-dark text-white-50 my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
                             <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
                             
                             <div className='text-danger'>
                                 <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
                             </div>
 
-                            <img
-                                src='../img/tasktrack.png'
-                                height='100'
-                                alt=''
-                                loading='lazy'
-                                className='rounded-circle'
-                            />
+                            <FontAwesomeIcon icon={faIls} size='5x'/>
 
-                            <p className="mt-2 mb-2">Sign In</p>
+                            <p className="mt-4 mb-2">Sign In</p>
 
                             <MDBInput 
                                 wrapperClass='mb-4 mx-5 w-100' 

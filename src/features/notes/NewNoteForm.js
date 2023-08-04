@@ -1,8 +1,19 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAddNewNoteMutation } from "./notesApiSlice"
+import {
+    MDBContainer,
+    MDBCard, 
+    MDBCardBody, 
+    MDBInput, 
+    MDBBtn, 
+    MDBRow, 
+    MDBCol, 
+    MDBTextArea
+} from 'mdb-react-ui-kit'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+import Select from 'react-select'
 
 const NewNoteForm = ({ users }) => {
 
@@ -30,7 +41,7 @@ const NewNoteForm = ({ users }) => {
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onTextChanged = e => setText(e.target.value)
-    const onUserIdChanged = e => setUserId(e.target.value)
+    const onUserIdChanged = e => setUserId(e.value)
 
     const canSave = [title, text, userId].every(Boolean) && !isLoading
 
@@ -41,71 +52,72 @@ const NewNoteForm = ({ users }) => {
         }
     }
 
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
-            > {user.username}</option >
-        )
+    const options = users.map(user =>  {
+        const container = {};
+        container['value'] = user.id
+        container['label'] = user.username
+        return container
     })
 
     const errClass = isError ? "errmsg" : "offscreen"
-    const validTitleClass = !title ? "form__input--incomplete" : ''
-    const validTextClass = !text ? "form__input--incomplete" : ''
 
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+            <MDBContainer fluid>
 
-            <form className="form" onSubmit={onSaveNoteClicked}>
-                <div className="form__title-row">
-                    <h2>New Note</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                    </div>
-                </div>
-                <label className="form__label" htmlFor="title">
-                    Title:</label>
-                <input
-                    className={`form__input ${validTitleClass}`}
-                    id="title"
-                    name="title"
-                    type="text"
-                    autoComplete="off"
-                    value={title}
-                    onChange={onTitleChanged}
-                />
+                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
 
-                <label className="form__label" htmlFor="text">
-                    Text:</label>
-                <textarea
-                    className={`form__input form__input--text ${validTextClass}`}
-                    id="text"
-                    name="text"
-                    value={text}
-                    onChange={onTextChanged}
-                />
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                        
+                        <p className={errClass}>{error?.data?.message}</p>
 
-                <label className="form__label form__checkbox-container" htmlFor="username">
-                    ASSIGNED TO:</label>
-                <select
-                    id="username"
-                    name="username"
-                    className="form__select"
-                    value={userId}
-                    onChange={onUserIdChanged}
-                >
-                    {options}
-                </select>
+                        <MDBInput 
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Title' 
+                            size="lg"
+                            required
+                            id="title"
+                            name="title"
+                            type="text"
+                            autoComplete="off"
+                            value={title}
+                            onChange={onTitleChanged}
+                        />
 
-            </form>
+                        <MDBTextArea 
+                            labelClass='text-secondary' 
+                            label='Task Description' 
+                            id='text' 
+                            rows={4}
+                            value={text}
+                            onChange={onTextChanged}
+                        />
+
+                        <Select
+                            className="basic-single mt-3"
+                            classNamePrefix="select"
+                            defaultValue={options[0]}
+                            isLoading={isLoading}
+                            isSearchable
+                            name="User"
+                            options={options}
+                            onChange={onUserIdChanged}
+                        />
+
+                        <MDBBtn className='m-3 px-5 btn-primary' size='lg' onClick={onSaveNoteClicked}>
+                            <FontAwesomeIcon icon={faSave} /> Save
+                        </MDBBtn>
+
+                        </MDBCardBody>
+                    </MDBCard>
+
+                    </MDBCol>
+                </MDBRow>
+
+            </MDBContainer>
         </>
     )
 

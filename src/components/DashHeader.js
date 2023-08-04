@@ -6,7 +6,8 @@ import {
     faUserGear,
     faUserPlus,
     faHouse,
-    faRightFromBracket
+    faRightFromBracket,
+    faIls
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
@@ -62,7 +63,7 @@ const DashHeader = () => {
     let goHomeButton = (
         <MDBNavbarItem>
             <MDBNavbarLink onClick={onGoHomeClicked}>
-                <FontAwesomeIcon icon={faHouse} size='xl'/> {username} ({status})
+                <FontAwesomeIcon className='headerIcon' icon={faHouse} size='xl'/> {username} ({status})
             </MDBNavbarLink>
         </MDBNavbarItem>
     )
@@ -72,7 +73,7 @@ const DashHeader = () => {
         newNoteButton = (
             <MDBNavbarItem>
                 <MDBNavbarLink onClick={onNewNoteClicked}>
-                    <FontAwesomeIcon icon={faFileCirclePlus} size='xl'/>
+                    <FontAwesomeIcon className='headerIcon' icon={faFileCirclePlus} size='xl'/>
                 </MDBNavbarLink>
             </MDBNavbarItem>
         )
@@ -83,7 +84,7 @@ const DashHeader = () => {
         newUserButton = (
             <MDBNavbarItem>
                 <MDBNavbarLink onClick={onNewUserClicked}>
-                    <FontAwesomeIcon icon={faUserPlus} size='xl'/>
+                    <FontAwesomeIcon className='headerIcon' icon={faUserPlus} size='xl'/>
                 </MDBNavbarLink>
             </MDBNavbarItem>
         )
@@ -95,7 +96,7 @@ const DashHeader = () => {
             userButton = (
                 <MDBNavbarItem>
                     <MDBNavbarLink onClick={onUsersClicked}>
-                        <FontAwesomeIcon icon={faUserGear} size='xl'/>
+                        <FontAwesomeIcon className='headerIcon' icon={faUserGear} size='xl'/>
                     </MDBNavbarLink>
                 </MDBNavbarItem>
             )
@@ -107,7 +108,7 @@ const DashHeader = () => {
         notesButton = (
             <MDBNavbarItem>
                 <MDBNavbarLink onClick={onNotesClicked}>
-                    <FontAwesomeIcon icon={faFilePen} size='xl'/>
+                    <FontAwesomeIcon className='headerIcon' icon={faFilePen} size='xl'/>
                 </MDBNavbarLink>
             </MDBNavbarItem>
         )
@@ -116,7 +117,7 @@ const DashHeader = () => {
     const logoutButton = (
         <MDBNavbarItem>
             <MDBNavbarLink onClick={sendLogout}>
-                <FontAwesomeIcon icon={faRightFromBracket} size='xl'/>
+                <FontAwesomeIcon className='headerIcon' icon={faRightFromBracket} size='xl'/>
             </MDBNavbarLink>
         </MDBNavbarItem>
     )
@@ -140,16 +141,10 @@ const DashHeader = () => {
 
     const content = (
         <>
-            <MDBNavbar expand='lg' dark bgColor='dark' fixed='top'>
+            <MDBNavbar expand='lg' light bgColor='light' fixed='top'>
                 <MDBContainer fluid>
                     <MDBNavbarBrand>
-                        <img
-                        src='../img/logo.png'
-                        height='30'
-                        alt=''
-                        loading='lazy'
-                        className='rounded-circle'
-                        />
+                        <FontAwesomeIcon icon={faIls} size='xl'/>
                     </MDBNavbarBrand>
                     <MDBNavbarToggler
                         type='button'

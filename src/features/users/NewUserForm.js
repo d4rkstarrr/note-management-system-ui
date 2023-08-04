@@ -3,6 +3,16 @@ import { useAddNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+import {
+    MDBContainer,
+    MDBCard, 
+    MDBCardBody, 
+    MDBInput, 
+    MDBBtn, 
+    MDBRow, 
+    MDBCol
+} from 'mdb-react-ui-kit'
+import Select from 'react-select'
 import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z]{3,20}$/
@@ -46,8 +56,9 @@ const NewUserForm = () => {
     const onPasswordChanged = e => setPassword(e.target.value)
 
     const onRolesChanged = e => {
+        console.log(e)
         const values = Array.from(
-            e.target.selectedOptions, //HTMLCollection 
+            e, 
             (option) => option.value
         )
         setRoles(values)
@@ -62,25 +73,22 @@ const NewUserForm = () => {
         }
     }
 
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
-
-            > {role}</option >
-        )
+    const options = Object.values(ROLES).map(role =>  {
+        const container = {};
+        container['value'] = role
+        container['label'] = role
+        return container
     })
 
     const errClass = isError ? "errmsg" : "offscreen"
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
+    // const validUserClass = !validUsername ? 'form__input--incomplete' : ''
+    // const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
+    // const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
 
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+            {/* <p className={errClass}>{error?.data?.message}</p>
 
             <form className="form" onSubmit={onSaveUserClicked}>
                 <div className="form__title-row">
@@ -132,7 +140,70 @@ const NewUserForm = () => {
                     {options}
                 </select>
 
-            </form>
+            </form> */}
+
+            <MDBContainer fluid>
+
+                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
+
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                        
+                        <p className={errClass}>{error?.data?.message}</p>
+
+                        <MDBInput 
+                            id="username"
+                            name="username"
+                            type="text"
+                            autoComplete="off"
+                            value={username}
+                            onChange={onUsernameChanged}
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Username [3-20 letters]:' 
+                            size="lg"
+                            required
+                        />
+
+                        <MDBInput 
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={password}
+                            onChange={onPasswordChanged}
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Password [4-12 chars incl. !@#$%]:' 
+                            size="lg"
+                            required
+                            autoComplete="off"
+                        />
+
+                        <Select
+                            id="roles"
+                            name="roles"
+                            className="basic-single mt-3"
+                            classNamePrefix="select"
+                            defaultValue={options[0]}
+                            isLoading={isLoading}
+                            isSearchable
+                            isMulti
+                            options={options}
+                            onChange={onRolesChanged}
+                        />
+
+                        <MDBBtn className='m-3 px-5 btn-primary' size='lg' onClick={onSaveUserClicked}>
+                            <FontAwesomeIcon icon={faSave} /> Save
+                        </MDBBtn>
+
+                        </MDBCardBody>
+                    </MDBCard>
+
+                    </MDBCol>
+                </MDBRow>
+
+            </MDBContainer>
         </>
     )
 

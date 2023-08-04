@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+.content{
+  margin-top: 60px;
+}
+
 .divider:after, .divider:before {
   content: "";
   flex: 1;
@@ -15,11 +19,20 @@
 }
 
 .form-control {
-  color: lightgray;
+  color: black;
 }
 
 .form-control:focus {
-  color: lightgray;
+  color: black;
+}
+
+.headerIcon{
+  color: #333333;
+  transition: 0.3s;
+}
+
+.headerIcon:hover{
+  color: #888888;
 }
 
 @media (max-width: 450px) {

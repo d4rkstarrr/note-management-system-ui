@@ -11,6 +11,8 @@ import {
     MDBInputGroup,
     MDBNavbarBrand
 } from 'mdb-react-ui-kit'
+import { faIls } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Public = () => {
 
@@ -18,15 +20,10 @@ const Public = () => {
 
     const content = (
             <header>
-                <MDBNavbar expand='lg' dark bg-transparent="true">
+                <MDBNavbar expand='lg' light bgColor='light'>
                     <MDBContainer fluid>
                         <MDBNavbarBrand>
-                            <img
-                            src='../img/logo.png'
-                            height='30'
-                            alt=''
-                            loading='lazy'
-                            />
+                            <FontAwesomeIcon icon={faIls} size='xl'/>
                         </MDBNavbarBrand>
                         <MDBNavbarToggler
                             type='button'
