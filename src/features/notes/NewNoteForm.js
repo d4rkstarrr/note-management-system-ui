@@ -97,7 +97,7 @@ const NewNoteForm = ({ users }) => {
                         />
 
                         <Select
-                            className="basic-single mt-3"
+                            className="basic-single mb-4 mt-4"
                             classNamePrefix="select"
                             defaultValue={options[0]}
                             isLoading={isLoading}
@@ -107,7 +107,7 @@ const NewNoteForm = ({ users }) => {
                             onChange={onUserIdChanged}
                         />
 
-                        <MDBBtn className='m-3 px-5 btn-primary' size='lg' onClick={onSaveNoteClicked}>
+                        <MDBBtn className='px-5 btn-primary' size='lg' onClick={onSaveNoteClicked}>
                             <FontAwesomeIcon icon={faSave} /> Save
                         </MDBBtn>
 

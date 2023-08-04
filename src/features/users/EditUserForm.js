@@ -3,6 +3,17 @@ import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import {
+    MDBContainer,
+    MDBCard, 
+    MDBCardBody, 
+    MDBInput, 
+    MDBBtn, 
+    MDBRow, 
+    MDBCol,
+    MDBCheckbox
+} from 'mdb-react-ui-kit'
+import Select from 'react-select'
 import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z]{3,20}$/
@@ -56,7 +67,7 @@ const EditUserForm = ({ user }) => {
 
     const onRolesChanged = e => {
         const values = Array.from(
-            e.target.selectedOptions,
+            e, 
             (option) => option.value
         )
         setRoles(values)
@@ -76,14 +87,18 @@ const EditUserForm = ({ user }) => {
         await deleteUser({ id: user.id })
     }
 
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
+    const options = Object.values(ROLES).map(role =>  {
+        const container = {};
+        container['value'] = role
+        container['label'] = role
+        return container
+    })
 
-            > {role}</option >
-        )
+    const selectedOptions = roles.map(role => {
+        const container = {};
+        container['value'] = role
+        container['label'] = role
+        return container
     })
 
     let canSave
@@ -94,16 +109,16 @@ const EditUserForm = ({ user }) => {
     }
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
+    // const validUserClass = !validUsername ? 'form__input--incomplete' : ''
+    // const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
+    // const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
+            {/* <p className={errClass}>{errContent}</p>
 
             <form className="form" onSubmit={e => e.preventDefault()}>
                 <div className="form__title-row">
@@ -175,7 +190,82 @@ const EditUserForm = ({ user }) => {
                     {options}
                 </select>
 
-            </form>
+            </form> */}
+            <MDBContainer fluid>
+
+                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
+
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                        
+                        <p className={errClass}>{errContent}</p>
+
+                        <MDBInput 
+                            id="username"
+                            name="username"
+                            type="text"
+                            autoComplete="off"
+                            value={username}
+                            onChange={onUsernameChanged}
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Username [3-20 letters]:' 
+                            size="lg"
+                            required
+                        />
+
+                        <MDBInput 
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={password}
+                            onChange={onPasswordChanged}
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Password [4-12 chars incl. !@#$%]:' 
+                            size="lg"
+                            required
+                            autoComplete="off"
+                        />
+
+                        <Select
+                            id="roles"
+                            name="roles"
+                            className="basic-single mb-4"
+                            classNamePrefix="select"
+                            isLoading={isLoading}
+                            isSearchable
+                            isMulti
+                            options={options}
+                            defaultValue={selectedOptions}
+                            onChange={onRolesChanged}
+                        />
+
+                        <MDBCheckbox 
+                            id="user-active"
+                            name="user-active"
+                            type="checkbox"
+                            className='mb-4' 
+                            label='Active User'
+                            checked={active}
+                            onChange={onActiveChanged}
+                        />
+
+                        <MDBBtn className='mb-4 px-5 btn-primary' size='lg' disabled={!canSave} onClick={onSaveUserClicked}>
+                            <FontAwesomeIcon icon={faSave} /> Save User
+                        </MDBBtn>
+                        <MDBBtn className='px-5 btn-danger' size='lg' onClick={onDeleteUserClicked}>
+                            <FontAwesomeIcon icon={faTrashCan} /> Delete User
+                        </MDBBtn>
+
+                        </MDBCardBody>
+                    </MDBCard>
+
+                    </MDBCol>
+                </MDBRow>
+
+            </MDBContainer>
         </>
     )
 

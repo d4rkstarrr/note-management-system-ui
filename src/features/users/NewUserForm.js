@@ -56,7 +56,6 @@ const NewUserForm = () => {
     const onPasswordChanged = e => setPassword(e.target.value)
 
     const onRolesChanged = e => {
-        console.log(e)
         const values = Array.from(
             e, 
             (option) => option.value
@@ -88,60 +87,6 @@ const NewUserForm = () => {
 
     const content = (
         <>
-            {/* <p className={errClass}>{error?.data?.message}</p>
-
-            <form className="form" onSubmit={onSaveUserClicked}>
-                <div className="form__title-row">
-                    <h2>New User</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                    </div>
-                </div>
-                <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
-                <input
-                    className={`form__input ${validUserClass}`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                />
-
-                <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
-                <input
-                    className={`form__input ${validPwdClass}`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                />
-
-                <label className="form__label" htmlFor="roles">
-                    ASSIGNED ROLES:</label>
-                <select
-                    id="roles"
-                    name="roles"
-                    className={`form__select ${validRolesClass}`}
-                    multiple={true}
-                    size="3"
-                    value={roles}
-                    onChange={onRolesChanged}
-                >
-                    {options}
-                </select>
-
-            </form> */}
-
             <MDBContainer fluid>
 
                 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
@@ -183,7 +128,7 @@ const NewUserForm = () => {
                         <Select
                             id="roles"
                             name="roles"
-                            className="basic-single mt-3"
+                            className="basic-single mb-4"
                             classNamePrefix="select"
                             defaultValue={options[0]}
                             isLoading={isLoading}
@@ -193,7 +138,7 @@ const NewUserForm = () => {
                             onChange={onRolesChanged}
                         />
 
-                        <MDBBtn className='m-3 px-5 btn-primary' size='lg' onClick={onSaveUserClicked}>
+                        <MDBBtn className='px-5 btn-primary' size='lg' onClick={onSaveUserClicked}>
                             <FontAwesomeIcon icon={faSave} /> Save
                         </MDBBtn>
 

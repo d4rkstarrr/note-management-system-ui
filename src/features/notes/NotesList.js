@@ -1,13 +1,19 @@
 import { useGetNotesQuery } from "./notesApiSlice"
-import Note from "./Note"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import useAuth from "../../hooks/useAuth"
 import useTitle from "../../hooks/useTitle"
 import PulseLoader from 'react-spinners/PulseLoader'
+import DataTable from "react-data-table-component"
+import { useNavigate } from 'react-router-dom'
+import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 
 const NotesList = () => {
     useTitle('Task List')
 
     const { username, isManager, isAdmin } = useAuth()
+
+    const navigate = useNavigate()
 
     const {
         data: notes,
@@ -39,25 +45,69 @@ const NotesList = () => {
             filteredIds = ids.filter(noteId => entities[noteId].username === username)
         }
 
-        const tableContent = ids?.length && filteredIds.map(noteId => <Note key={noteId} noteId={noteId} />)
+        const columns = [
+            {
+                name: 'Title',
+                selector: row => row.title,
+                sortable: true,
+            },
+            {
+                name: 'Status',
+                selector: row => row.status,
+                sortable: true,
+            },
+            {
+                name: 'Created On',
+                selector: row => row.created,
+                sortable: true,
+            },
+            {
+                name: 'Last Updated On',
+                selector: row => row.updated,
+                sortable: true,
+            },
+            {
+                name: 'Owner',
+                selector: row => row.owner,
+                sortable: true,
+            },
+            {
+                name: 'Edit',
+                selector: row => row.edit,
+                sortable: false,
+            },
+        ]
 
-        content = (
-            <table className="table table--notes">
-                <thead className="table__thead">
-                    <tr>
-                        <th scope="col">Status</th>
-                        <th scope="col">Created</th>
-                        <th scope="col">Updated</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Owner</th>
-                        <th scope="col">Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </table>
-        )
+        const data = filteredIds?.length && filteredIds.map(noteId => {
+            const container = {}
+            container['status'] = entities[noteId].completed ? "Completed" : "In Progress"
+            container['created'] = new Date(entities[noteId].createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long' })
+            container['updated'] = new Date(entities[noteId].updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long' })
+            container['title'] = entities[noteId].title
+            container['owner'] = entities[noteId].username
+
+            const handleEdit = () => navigate(`/dash/notes/${noteId}`)
+            container['edit'] = <div role="button" onClick={handleEdit}>
+                                    <FontAwesomeIcon icon={faPenToSquare} size='xl'/>
+                                </div>
+            return container
+        })
+        
+        content = 
+            <MDBCard className="m-5 p-2">
+                <MDBCardBody>
+                    <DataTable
+                        columns={columns}
+                        data={data}
+                        pagination
+                        defaultSortFieldId={2}
+                        defaultSortAsc={false}
+                        highlightOnHover={true}
+                        paginationPerPage={15}
+                        theme='light'
+                    />
+                </MDBCardBody>
+            </MDBCard>
     }
 
     return content
