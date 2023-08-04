@@ -3,10 +3,24 @@ import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import {
+    MDBContainer,
+    MDBCard, 
+    MDBCardBody, 
+    MDBInput, 
+    MDBBtn, 
+    MDBRow, 
+    MDBCol,
+    MDBTextArea,
+    MDBCheckbox
+} from 'mdb-react-ui-kit'
+import Select from 'react-select'
 import useAuth from "../../hooks/useAuth"
 
 const EditNoteForm = ({ note, users }) => {
 
+    console.log(users);
+    console.log(note);
     const { isManager, isAdmin } = useAuth()
 
     const [updateNote, {
@@ -28,6 +42,7 @@ const EditNoteForm = ({ note, users }) => {
     const [text, setText] = useState(note.text)
     const [completed, setCompleted] = useState(note.completed)
     const [userId, setUserId] = useState(note.user)
+    const [username, setUsername] = useState(note.username)
 
     useEffect(() => {
 
@@ -43,8 +58,11 @@ const EditNoteForm = ({ note, users }) => {
     const onTitleChanged = e => setTitle(e.target.value)
     const onTextChanged = e => setText(e.target.value)
     const onCompletedChanged = e => setCompleted(prev => !prev)
-    const onUserIdChanged = e => setUserId(e.target.value)
 
+    const handleUserChange = e => {
+        setUserId(e.value)
+        setUsername(e.label)
+    }
     const canSave = [title, text, userId].every(Boolean) && !isLoading
 
     const onSaveNoteClicked = async (e) => {
@@ -60,19 +78,19 @@ const EditNoteForm = ({ note, users }) => {
     const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
-
-            > {user.username}</option >
-        )
+    const options = users.map(user =>  {
+        const container = {};
+        container['value'] = user.id
+        container['label'] = user.username
+        return container
     })
 
+    const selectedOptions = {
+        value: userId,
+        label: username
+    }
+
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validTitleClass = !title ? "form__input--incomplete" : ''
-    const validTextClass = !text ? "form__input--incomplete" : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
@@ -80,88 +98,89 @@ const EditNoteForm = ({ note, users }) => {
     let deleteButton = null
     if (isManager || isAdmin) {
         deleteButton = (
-            <button
-                className="icon-button"
-                title="Delete"
-                onClick={onDeleteNoteClicked}
-            >
-                <FontAwesomeIcon icon={faTrashCan} />
-            </button>
+            <MDBBtn className='mt-4 px-5 btn-danger' size='lg' onClick={onDeleteNoteClicked}>
+                <FontAwesomeIcon icon={faTrashCan} /> Delete Note
+            </MDBBtn>
         )
     }
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
+            <MDBContainer fluid>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="form__title-row">
-                    <h2>Edit Note #{note.ticket}</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            onClick={onSaveNoteClicked}
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        {deleteButton}
-                    </div>
-                </div>
-                <label className="form__label" htmlFor="note-title">
-                    Title:</label>
-                <input
-                    className={`form__input ${validTitleClass}`}
-                    id="note-title"
-                    name="title"
-                    type="text"
-                    autoComplete="off"
-                    value={title}
-                    onChange={onTitleChanged}
-                />
+                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
 
-                <label className="form__label" htmlFor="note-text">
-                    Text:</label>
-                <textarea
-                    className={`form__input form__input--text ${validTextClass}`}
-                    id="note-text"
-                    name="text"
-                    value={text}
-                    onChange={onTextChanged}
-                />
-                <div className="form__row">
-                    <div className="form__divider">
-                        <label className="form__label form__checkbox-container" htmlFor="note-completed">
-                            WORK COMPLETE:
-                            <input
-                                className="form__checkbox"
-                                id="note-completed"
-                                name="completed"
-                                type="checkbox"
-                                checked={completed}
-                                onChange={onCompletedChanged}
-                            />
-                        </label>
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                        
+                        <p className={errClass}>{errContent}</p>
 
-                        <label className="form__label form__checkbox-container" htmlFor="note-username">
-                            ASSIGNED TO:</label>
-                        <select
+                        <MDBInput 
+                            id="note-title"
+                            name="title"
+                            type="text"
+                            autoComplete="off"
+                            value={title}
+                            onChange={onTitleChanged}
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-secondary' 
+                            label='Username [3-20 letters]:' 
+                            size="lg"
+                            required
+                        />
+
+                        <MDBTextArea 
+                            id="note-text"
+                            name="text"
+                            value={text}
+                            onChange={onTextChanged}
+                            labelClass='text-secondary' 
+                            label='Task Description' 
+                            rows={4}
+                        />
+
+                        <Select
                             id="note-username"
                             name="username"
-                            className="form__select"
-                            value={userId}
-                            onChange={onUserIdChanged}
-                        >
-                            {options}
-                        </select>
-                    </div>
-                    <div className="form__divider">
-                        <p className="form__created">Created:<br />{created}</p>
-                        <p className="form__updated">Updated:<br />{updated}</p>
-                    </div>
-                </div>
-            </form>
+                            value={selectedOptions}
+                            onChange={handleUserChange}
+                            className="basic-single mb-4 mt-4 w-100"
+                            classNamePrefix="select"
+                            defaultValue={options[0]}
+                            isLoading={isLoading}
+                            isSearchable
+                            options={options}
+                        />
+
+                        <MDBCheckbox 
+                            id="note-completed"
+                            name="completed"
+                            type="checkbox"
+                            checked={completed}
+                            onChange={onCompletedChanged}
+                            className='mb-4' 
+                            label='Task Completed'
+                        />
+
+                        <div className="form__divider">
+                            <p className="form__created">Created:<br />{created}</p>
+                            <p className="form__updated">Updated:<br />{updated}</p>
+                        </div>
+
+                        <MDBBtn className='px-5 btn-primary' size='lg' disabled={!canSave} onClick={onSaveNoteClicked}>
+                            <FontAwesomeIcon icon={faSave} /> Save User
+                        </MDBBtn>
+
+                        {deleteButton}
+
+                        </MDBCardBody>
+                    </MDBCard>
+
+                    </MDBCol>
+                </MDBRow>
+
+            </MDBContainer>
         </>
     )
 
