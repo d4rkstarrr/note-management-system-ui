@@ -111,7 +111,7 @@ const EditNoteForm = ({ note, users }) => {
                 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                     <MDBCol col='12'>
 
-                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
                         <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
                         
                         <p className={errClass}>{errContent}</p>
@@ -164,12 +164,12 @@ const EditNoteForm = ({ note, users }) => {
                         />
 
                         <div className="form__divider">
-                            <p className="form__created">Created:<br />{created}</p>
-                            <p className="form__updated">Updated:<br />{updated}</p>
+                            <p className="form__created">Created: {created}</p>
+                            <p className="form__updated">Updated: {updated}</p>
                         </div>
 
                         <MDBBtn className='px-5 btn-primary' size='lg' disabled={!canSave} onClick={onSaveNoteClicked}>
-                            <FontAwesomeIcon icon={faSave} /> Save User
+                            <FontAwesomeIcon icon={faSave} /> Save Note
                         </MDBBtn>
 
                         {deleteButton}

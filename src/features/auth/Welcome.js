@@ -1,4 +1,12 @@
-import { Link } from 'react-router-dom'
+import {
+    MDBContainer,
+    MDBCard, 
+    MDBCardBody, 
+    MDBRow, 
+    MDBCol,
+    MDBListGroup,
+    MDBListGroupItem
+} from 'mdb-react-ui-kit'
 import useAuth from '../../hooks/useAuth'
 
 const Welcome = () => {
@@ -9,20 +17,41 @@ const Welcome = () => {
     const today = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
     const content = (
-        <section className="welcome">
+        <section>
 
-            <p>{today}</p>
+            
 
-            <h1>Welcome {username}!</h1>
+            <MDBContainer fluid>
 
-            <p><Link to="/dash/notes">View techNotes</Link></p>
+                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
 
-            <p><Link to="/dash/notes/new">Add New techNote</Link></p>
+                    <MDBCard className='bg-light my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
+                            <p>{today}</p>
+                            <h1>Welcome {username}!</h1>
 
-            {(isManager || isAdmin) && <p><Link to="/dash/users">View User Settings</Link></p>}
+                            <MDBListGroup style={{ minWidth: '22rem' }} light>
+                                <MDBListGroupItem tag='a' color='secondary' href='/dash/notes' action className='px-3'>
+                                    View Tasks
+                                </MDBListGroupItem>
+                                <MDBListGroupItem tag='a' color='secondary' href='/dash/notes/new' action className='px-3'>
+                                    Create New Task
+                                </MDBListGroupItem>
+                                {(isManager || isAdmin) && <MDBListGroupItem tag='a' color='secondary' href='/dash/users' action className='px-3'>
+                                    View Users
+                                </MDBListGroupItem>}
+                                {(isManager || isAdmin) && <MDBListGroupItem tag='a' color='secondary' href='/dash/users/new' action className='px-3'>
+                                    Create New User
+                                </MDBListGroupItem>}
+                            </MDBListGroup>
+                        </MDBCardBody>
+                    </MDBCard>
 
-            {(isManager || isAdmin) && <p><Link to="/dash/users/new">Add New User</Link></p>}
+                    </MDBCol>
+                </MDBRow>
 
+            </MDBContainer>
         </section>
     )
 
